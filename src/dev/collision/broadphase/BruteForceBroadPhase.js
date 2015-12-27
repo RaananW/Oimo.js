@@ -28,20 +28,22 @@ OIMO.BruteForceBroadPhase.prototype.addProxy = function(proxy){
         //for(var i=0, l=this.numProxies;i<l;i++){
             newProxies[i]=this.proxies[i];
         }
-        this.proxies=newProxies;
+        this.proxies = newProxies;
     }
 
     this.proxies[this.numProxies++] = proxy;
 };
 OIMO.BruteForceBroadPhase.prototype.removeProxy = function(proxy){
-    var i = this.numProxies;
-    while(i--){
-        if(this.proxies[i] == proxy){
-            this.proxies[i] = this.proxies[--this.numProxies];
-            this.proxies[this.numProxies] = null;
-            return;
-        }
-    }
+    //var i = this.numProxies;
+    //while(i--){
+        //if(this.proxies[i] == proxy){
+            //this.proxies[i] = this.proxies[--this.numProxies];
+            //this.proxies[this.numProxies] = null;
+            //return;
+        //}
+    //}
+
+    this.proxies.splice(this.proxies.indexOf(proxy), 1);
 };
 OIMO.BruteForceBroadPhase.prototype.collectPairs = function(){
     var i, j, p1, b1, s1, p2, b2, s2;
