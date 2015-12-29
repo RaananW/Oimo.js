@@ -2,6 +2,7 @@ var OIMO = (function(){
 	var OIMO = OIMO || {
 		REVISION: 1,
 		EPSILON: 0.0001,
+		ERR_INHERITANCE: "Inheritance error.",
 
 		// Math functions
 		abs: Math.abs,
