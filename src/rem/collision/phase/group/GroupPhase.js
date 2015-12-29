@@ -13,19 +13,22 @@ OIMO.GroupPhase = function(detail){
 OIMO.GroupPhase.prototype = Object.create(OIMO.CollisionPhase.prototype);
 OIMO.GroupPhase.prototype.constructor = OIMO.GroupPhase;
 
+OIMO.GroupPhase.prototype.addPair = function(p1, p2){
+	
+}
 OIMO.GroupPhase.prototype.computeGroups = function(){
-	var i, j, m, c, ac, d, ad, f, bd, nr, pl, ck, gr, bodies = this.proxies;
+	var i, j, m, c, ac, d, ad, f, bd, nr, pl, ck, gr, u = this.proxies;
 
-	i = bodies.length;
+	i = u.length;
 	nr = []; // Array of distances
 	bd = []; // Array of AABBs to add to group
 	gr = []; // Array of proxy groups
 	pl = {}; // Object reference to AABBs from a distance
 
 	while(i--){
-		c = bodies[i];
+		c = u[i];
 		ac = c.aabb;
-		j = bodies.length;
+		j = u.length;
 		m = this.groupSize;
 
 		if(c.isGrouped)
@@ -33,7 +36,7 @@ OIMO.GroupPhase.prototype.computeGroups = function(){
 
 		bd.push(c);
 		while(j--){
-			d = bodies[j];
+			d = u[j];
 			ad = d.aabb;
 			ck = ac.center.distanceTo(ad.center);
 
