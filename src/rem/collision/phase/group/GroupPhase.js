@@ -14,6 +14,12 @@ OIMO.GroupPhase = function(detail){
 OIMO.GroupPhase.prototype = Object.create(OIMO.CollisionPhase.prototype);
 OIMO.GroupPhase.prototype.constructor = OIMO.GroupPhase;
 
+OIMO.GroupPhase.prototype.addProxy = function(){
+	OIMO.err("GroupPhase", OIMO.ERR_INHERITANCE);
+};
+OIMO.GroupPhase.prototype.removeProxy = function(){
+	OIMO.err("GroupPhase", OIMO.ERR_INHERITANCE);
+};
 OIMO.GroupPhase.prototype.addPair = function(p1, p2){
 	this.pairs.push(new OIMO.Pair(p1, p2));
 };
