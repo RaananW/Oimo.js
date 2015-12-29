@@ -13,6 +13,8 @@ OIMO.SimpleGroupPhase.prototype.removeProxy = function(proxy){
 OIMO.SimpleGroupPhase.prototype.computePairs = function(){
 	var i, j, c, d, gr;
 
+	this.pairs = [];
+
 	// Create groups with given shape proxies
 	this.computeGroups();
 
