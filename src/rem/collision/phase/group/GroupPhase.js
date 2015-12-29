@@ -7,6 +7,7 @@
 OIMO.GroupPhase = function(detail){
 	OIMO.CollisionPhase.call(this);
 
+	this.pairs = [];
 	this.groups = [];
 	this.groupSize = detail;
 };
@@ -14,8 +15,8 @@ OIMO.GroupPhase.prototype = Object.create(OIMO.CollisionPhase.prototype);
 OIMO.GroupPhase.prototype.constructor = OIMO.GroupPhase;
 
 OIMO.GroupPhase.prototype.addPair = function(p1, p2){
-	
-}
+	this.pairs.push(new OIMO.Pair(p1, p2));
+};
 OIMO.GroupPhase.prototype.computeGroups = function(){
 	var i, j, m, c, ac, d, ad, f, bd, nr, pl, ck, gr, u = this.proxies;
 
