@@ -5,10 +5,3 @@
 OIMO.CollisionPhase = function(){
 	this.world = null;
 };
-OIMO.CollisionPhase.prototype = {
-	constructor: OIMO.CollisionPhase,
-
-	computePairs: function(){
-		OIMO.err("CollisionPhase", OIMO.ERR_INHERITANCE);
-	}
-};
