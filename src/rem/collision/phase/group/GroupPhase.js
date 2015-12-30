@@ -7,12 +7,12 @@
  * hassle.
  * @author xprogram
  */
-OIMO.GroupPhase = function(detail){
+OIMO.GroupPhase = function(){
 	OIMO.CollisionPhase.call(this);
 
 	this.pairs = [];
 	this.groups = [];
-	this.groupSize = detail;
+	this.groupSize = 2;
 	this.groupMargin = Infinity;
 };
 OIMO.GroupPhase.prototype = Object.create(OIMO.CollisionPhase.prototype);
