@@ -12,5 +12,5 @@ OIMO.NarrowPhase.prototype = Object.create(OIMO.CollisionPhase.prototype);
 OIMO.NarrowPhase.prototype.constructor = OIMO.MidPhase;
 
 OIMO.NarrowPhase.prototype.computeManifolds = function(){
-	OIMO.err("MidPhase", OIMO.ERR_INHERITANCE);
+	OIMO.err("NarrowPhase", OIMO.ERR_INHERITANCE);
 };
