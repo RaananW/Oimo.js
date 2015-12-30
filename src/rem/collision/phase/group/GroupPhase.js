@@ -1,7 +1,10 @@
 /**
  * Class for a group phase implementation, a
  * phase before broad phase to narrow down even
- * more the collision checking.
+ * more the collision checking. We split the given
+ * proxies into small groups (can be configured)
+ * to solve like a normal broadphase, but with less
+ * hassle.
  * @author xprogram
  */
 OIMO.GroupPhase = function(detail){
