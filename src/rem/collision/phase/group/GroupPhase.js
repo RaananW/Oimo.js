@@ -10,6 +10,7 @@ OIMO.GroupPhase = function(detail){
 	this.pairs = [];
 	this.groups = [];
 	this.groupSize = detail;
+	this.groupMargin = Infinity;
 };
 OIMO.GroupPhase.prototype = Object.create(OIMO.CollisionPhase.prototype);
 OIMO.GroupPhase.prototype.constructor = OIMO.GroupPhase;
@@ -24,7 +25,7 @@ OIMO.GroupPhase.prototype.addPair = function(p1, p2){
 	this.pairs.push(new OIMO.Pair(p1, p2));
 };
 OIMO.GroupPhase.prototype.computeGroups = function(){
-	var i, j, m, c, ac, d, ad, f, bd, nr, pl, ck, gr, u = this.proxies;
+	var i, j, m, c, d, f, bd, nr, pl, ck, gr, u = this.proxies;
 
 	i = u.length;
 	nr = []; // Array of distances
@@ -34,36 +35,38 @@ OIMO.GroupPhase.prototype.computeGroups = function(){
 
 	while(i--){
 		c = u[i];
-		ac = c.aabb;
 		j = u.length;
 		m = this.groupSize;
 
 		if(c.isGrouped)
 			continue;
 
+		c.isGrouped = true;
 		bd.push(c);
+
 		while(j--){
 			d = u[j];
-			ad = d.aabb;
-			ck = ac.center.distanceTo(ad.center);
 
-			// Cannot collide with itself
-			if(c === d)
+			// Cannot merge with itself or another group proxy
+			if(c === d || d.isGrouped)
 				continue;
+
+			ck = c.aabb.getCenter().distanceTo(d.aabb.getCenter());
 
 			nr.push(ck);
 			pl[ck] = d; // Store index for later use
 		}
 
 		// Sort array to quickly get the nearest AABBs
-		nr.sort(OIMO.ARR_NUMBERS_UP);
+		nr.sort(OIMO.ARR_NUMBERS_DOWN);
 
 		// Add the nearest AABBs to the new group
 		while(m--){
-			if(!nr.length)
+			if(!nr.length || nr[nr.length - 1] > this.groupMargin)
 				break;
 
-			f = pl[nr.shift()];
+			// Assign AABB to group from distance
+			f = pl[nr.pop()];
 			f.isGrouped = true;
 			bd.push(f);
 		}
@@ -71,5 +74,5 @@ OIMO.GroupPhase.prototype.computeGroups = function(){
 		gr.push(new OIMO.GroupProxy(bd));
 	}
 
-	this.groups = gr;
+	this.groups = gr; // Overwrite groups array
 };
