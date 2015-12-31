@@ -5,6 +5,7 @@
  * @author xprogram
  */
 OIMO.BroadPhase = function(){
+	this.proxies = [];
 	this.pairs = [];
 	this.numChecks = 0;
 };
