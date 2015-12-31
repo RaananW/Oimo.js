@@ -4,13 +4,28 @@
  * @author xprogram
  */
 OIMO.NarrowPhase = function(){
-	OIMO.CollisionPhase.call(this);
-
 	this.manifolds = [];
 };
-OIMO.NarrowPhase.prototype = Object.create(OIMO.CollisionPhase.prototype);
-OIMO.NarrowPhase.prototype.constructor = OIMO.MidPhase;
+OIMO.NarrowPhase.prototype = {
+	constructor: OIMO.NarrowPhase,
 
-OIMO.NarrowPhase.prototype.computeManifolds = function(){
-	OIMO.err("NarrowPhase", OIMO.ERR_INHERITANCE);
+	createProxy: function(){
+		OIMO.err("NarrowPhase", OIMO.ERR_INHERITANCE);
+	},
+	addProxy: function(){
+		OIMO.err("NarrowPhase", OIMO.ERR_INHERITANCE);
+	},
+	removeProxy: function(){
+		OIMO.err("NarrowPhase", OIMO.ERR_INHERITANCE);
+	},
+	computeManifolds: function(){
+		this.manifolds = []; // Reset array
+		this.collectManifolds();
+	},
+	collectManifolds: function(){
+		OIMO.err("NarrowPhase", OIMO.ERR_INHERITANCE);
+	},
+	addPair: function(p1, p2){
+		this.pairs.push(new OIMO.Pair(p1, p2));
+	}
 };
