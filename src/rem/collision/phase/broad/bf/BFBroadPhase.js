@@ -28,11 +28,11 @@ OIMO.BFBroadPhase.prototype.removeProxy = function(proxy){
 	arr.length--;
 };
 OIMO.BRBroadPhase.prototype.collectPairs = function(){
-    var i, j, p1, b1, s1, p2, b2, s2, arr = this.proxies, l = arr.length;
+	var i, j, p1, b1, s1, p2, b2, s2, arr = this.proxies, l = arr.length;
 
-    this.numChecks = l * (l - 1) >> 1;
+	this.numChecks = l * (l - 1) >> 1;
 
-    i = l; // Amount of proxies to check
+	i = l; // Amount of proxies to check
 	while(i--){
 		p1 = arr[i]; // First proxy
 		b1 = p1.aabb; // AABB of proxy 1
@@ -51,5 +51,5 @@ OIMO.BRBroadPhase.prototype.collectPairs = function(){
 				this.addPair(s1, s2);
 			}
 		}
-    }
+	}
 };
