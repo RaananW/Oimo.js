@@ -48,7 +48,7 @@ OIMO.BRBroadPhase.prototype.collectPairs = function(){
 				if(b1.containsBox(b2) && !this.isAvailablePair(s1, s2))
 					continue;
 
-				this.addPair(s1, s2);
+				this.addPair(p1, p2);
 			}
 		}
 	}
