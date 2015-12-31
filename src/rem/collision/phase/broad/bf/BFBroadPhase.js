@@ -27,3 +27,29 @@ OIMO.BFBroadPhase.prototype.removeProxy = function(proxy){
 
 	arr.length--;
 };
+OIMO.BRBroadPhase.prototype.collectPairs = function(){
+    var i, j, p1, b1, s1, p2, b2, s2, arr = this.proxies, l = arr.length;
+
+    this.numChecks = l * (l - 1) >> 1;
+
+    i = l; // Amount of proxies to check
+	while(i--){
+		p1 = arr[i]; // First proxy
+		b1 = p1.aabb; // AABB of proxy 1
+		s1 = p1.shape; // Shape of proxy 1
+		j = l; // Amount of proxies to check
+
+		while(j--){
+			if(j !== i){
+				p2 = arr[j]; // Second proxy
+				b2 = p2.aabb; // AABB of proxy 2
+				s2 = p2.shape; // Shape of proxy 2
+
+				if(b1.containsBox(b2) && !this.isAvailablePair(s1, s2))
+				    continue;
+
+				this.addPair(s1, s2);
+			}
+		}
+    }
+};
