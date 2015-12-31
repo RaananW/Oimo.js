@@ -46,7 +46,7 @@ OIMO.BRBroadPhase.prototype.collectPairs = function(){
 				s2 = p2.shape; // Shape of proxy 2
 
 				if(b1.containsBox(b2) && !this.isAvailablePair(s1, s2))
-				    continue;
+					continue;
 
 				this.addPair(s1, s2);
 			}
