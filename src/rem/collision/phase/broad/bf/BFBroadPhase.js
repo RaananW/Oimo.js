@@ -12,21 +12,6 @@ OIMO.BFBroadPhase.prototype.constructor = OIMO.BFBroadPhase;
 OIMO.BFBroadPhase.prototype.createProxy = function(shape){
 	return new OIMO.BRBroadProxy(shape);
 };
-OIMO.BFBroadPhase.prototype.addProxy = function(proxy){
-	if(proxy instanceof OIMO.BRBroadProxy && this.proxies.indexOf(proxy) !== -1)
-		this.proxies.push(proxy);
-};
-OIMO.BFBroadPhase.prototype.removeProxy = function(proxy){
-	var arr = this.proxies;
-	var i = arr.length;
-
-	while(i--){
-		if(arr[i] === proxy)
-			arr[i] = arr[arr.length - 1];
-	}
-
-	arr.length--;
-};
 OIMO.BRBroadPhase.prototype.collectPairs = function(){
 	var i, j, p1, b1, s1, p2, b2, s2, arr = this.proxies, l = arr.length;
 
