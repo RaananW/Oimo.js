@@ -27,21 +27,16 @@ var OIMO = (function(){
 			return b - a;
 		},
 
-		// Pool functions
-		alloc: function(C){
-			if(!_pool[C].length)
-				_pool[C] = [new C];
-
-			return _pool[C].pop();
-		},
-		free: function(obj){
-			var C = obj.constructor;
-			_pool[C][_pool[C].length] = obj;
+		// Extra utils
+		err: function(obj, msg){
+			var message = "[OIMO] " + obj + ": " + msg;
+			if(console && console.toString() === "[object Console]"){
+				console.error(message);
+			} else if(self && self.postMessage){
+				self.postMessage({oimo: message});
+			}
 		}
 	};
-
-	// Private definitions
-	var _pool = {};
 
 	return OIMO;
 })();
