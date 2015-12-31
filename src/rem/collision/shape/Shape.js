@@ -3,7 +3,6 @@
  * @author saharan
  * @author lo-th
  */
-
 OIMO.Shape = function(config){
 	this.id = OIMO.id();
 
@@ -20,7 +19,6 @@ OIMO.Shape = function(config){
 	this.belongsTo = config.belongsTo;
 	this.hitIndex = config.hitIndex;
 };
-
 OIMO.Shape.prototype = {
 	constructor: OIMO.Shape,
 
