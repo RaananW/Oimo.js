@@ -6,6 +6,7 @@
  */
 OIMO.BroadPhase = function(){
 	this.pairs = [];
+	this.numChecks = 0;
 };
 OIMO.BroadPhase.prototype = {
 	constructor: OIMO.BroadPhase,
