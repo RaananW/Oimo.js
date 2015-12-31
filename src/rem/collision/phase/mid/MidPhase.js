@@ -4,7 +4,9 @@
  * @author xprogram
  */
 OIMO.MidPhase = function(){
+	this.proxies = [];
 	this.pairs = [];
+	this.numChecks = 0;
 };
 OIMO.MidPhase.prototype = {
 	constructor: OIMO.MidPhase,
