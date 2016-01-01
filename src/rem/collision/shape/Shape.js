@@ -6,26 +6,34 @@
 OIMO.Shape = function(config){
 	this.id = OIMO.id();
 
-	this.parent = null;
+	this.body = null;
 	this.contacts = [];
-	this.position = new OIMO.Vec3();
-	this.rotation = new OIMO.Mat33();
-	this.aabb = new OIMO.AABB();
+	this.position = new OIMO.Vec3;
+	this.rotation = new OIMO.Mat33;
+	this.aabb = new OIMO.AABB;
 	this.proxy = null;
+	this.massCenter = new OIMO.Vec3()
 
 	this.density = config.density;
 	this.friction = config.friction;
 	this.restitution = config.restitution;
-	this.belongsTo = config.belongsTo;
-	this.hitIndex = config.hitIndex;
+	this.hitGroups = config.hitGroups;
 };
 OIMO.Shape.prototype = {
 	constructor: OIMO.Shape,
 
 	setupMass: function(){
-		OIMO.err("Shape", OIMO.ERR_INHERITANCE);
+		var tot = new OIMO.Vec3, fs = this.faces;
+		var i = fs.length, j = 0;
+
+		while(i--){
+			tot.add(fs[i].centroid);
+			j++;
+		}
+
+		this.massCenter = tot / j;
 	},
 	updateProxy: function(){
-		this.proxy.setFromPoints(this.vertices).expandByScalar(OIMO.AABB_PROX);
+		this.proxy.aabb.setFromPoints(this.vertices).expandByScalar(OIMO.AABB_PROX);
 	}
 };
