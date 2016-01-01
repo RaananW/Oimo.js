@@ -11,7 +11,6 @@ OIMO.Shape = function(config){
 	this.position = new OIMO.Vec3;
 	this.rotation = new OIMO.Mat33;
 	this.proxy = null;
-	this.massCenter = new OIMO.Vec3()
 
 	this.density = config.density;
 	this.friction = config.friction;
@@ -21,7 +20,7 @@ OIMO.Shape = function(config){
 OIMO.Shape.prototype = {
 	constructor: OIMO.Shape,
 
-	setupMass: function(){
+	setupMass: function(out){
 		var tot = new OIMO.Vec3, fs = this.faces;
 		var i = fs.length, j = 0;
 
@@ -30,7 +29,7 @@ OIMO.Shape.prototype = {
 			j++;
 		}
 
-		this.massCenter = tot / j;
+		out.center = tot / j;
 	},
 	updateProxy: function(){
 		this.proxy.aabb.setFromPoints(this.vertices).expandByScalar(OIMO.AABB_PROX);
