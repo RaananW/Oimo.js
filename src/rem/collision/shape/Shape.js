@@ -10,7 +10,6 @@ OIMO.Shape = function(config){
 	this.contacts = [];
 	this.position = new OIMO.Vec3;
 	this.rotation = new OIMO.Mat33;
-	this.aabb = new OIMO.AABB;
 	this.proxy = null;
 	this.massCenter = new OIMO.Vec3()
 
