@@ -35,7 +35,13 @@ var OIMO = (function(){
 			} else if(self && self.postMessage){
 				self.postMessage({oimo: message});
 			}
-		}
+		},
+		id: (function(){
+			var _id = 0;
+			return function(){
+				return _id++;
+			};
+		})()
 	};
 
 	return OIMO;
