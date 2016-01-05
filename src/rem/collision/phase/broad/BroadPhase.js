@@ -5,22 +5,13 @@
  * @author xprogram
  */
 OIMO.BroadPhase = function(){
-	this.proxies = [];
+	this.shapes = [];
 	this.pairs = [];
 	this.numChecks = 0;
 };
 OIMO.BroadPhase.prototype = {
 	constructor: OIMO.BroadPhase,
 
-	createProxy: function(){
-		OIMO.err("BroadPhase", OIMO.ERR_INHERITANCE);
-	},
-	addProxy: function(){
-		OIMO.err("BroadPhase", OIMO.ERR_INHERITANCE);
-	},
-	removeProxy: function(){
-		OIMO.err("BroadPhase", OIMO.ERR_INHERITANCE);
-	},
 	computePairs: function(){
 		this.pairs = []; // Reset array
 		this.collectPairs();
