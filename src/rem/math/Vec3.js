@@ -29,6 +29,15 @@ OIMO.Vec3.prototype = {
 		this.z = z;
 		return this;
 	},
+	copy: function(v){
+		this.x = v.x;
+		this.y = v.y;
+		this.z = v.z;
+		return this;
+	},
+	clone: function(){
+		return new this.constructor(this.x, this.y, this.z);
+	},
 	add: function(v){
 		this.x += v.x;
 		this.y += v.y;
@@ -100,7 +109,7 @@ OIMO.Vec3.prototype = {
 		return "Vec3[" + this.x.toFixed(4) + "," + this.y.toFixed(4) + "," + this.z.toFixed(4) + "]";
 	},
 	lengthSq: function(){
-		return this.x * this.x + this.y * this.y + this.z * this.z;
+		return this.dot(this);
 	},
 	length: function(){
 		return OIMO.sqrt(this.lengthSq());
