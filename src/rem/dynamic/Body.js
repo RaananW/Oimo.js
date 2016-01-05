@@ -140,7 +140,8 @@ OIMO.Body.prototype = {
 	integrate: function(dt){ // From cannon.js
 		var pos = this.position, rot = this.rotation, lvel = this.velocity, avel = this.angularVelocity;
 		var g = this.invMass * dt, f = this.force, t = this.torque;
-		var lfac = this.linearFactor, afac = this.angularFactor;
+		var lfac = this.linearFactor, afac = this.angularFactor, hdt = dt * 0.5;
+		var ax = avel.x * afac.x, ay = avel.y * afac.y, az = avel.z * afac.z, bx = rot.x, by = rot.y, bz = rot.z, bw = rot.w;
 
 		// Update velocity (linear)
 		lvel.x += f.x * g * lfac;
@@ -162,7 +163,10 @@ OIMO.Body.prototype = {
 
 		// Update rotation
 		this.prevRotation.copy(rot);
-		rot.integrate(avel, dt, afac);
+		rot.x += hdt * (ax * bw + ay * bz - az * by);
+		rot.y += hdt * (ay * bw + az * bx - ax * bz);
+		rot.z += hdt * (az * bw + ax * by - ay * bx);
+		rot.w += hdt * (-ax * bx - ay * by - az * bz);
 
 		// Update extra information
 		this.updateInertiaWorld();
