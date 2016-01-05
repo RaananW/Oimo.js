@@ -27,6 +27,25 @@ var OIMO = (function(){
 			return b - a;
 		},
 
+		// Array methods
+		arem: function(arr, o){
+			var i = arr.length;
+		
+			while(i--){
+				if(arr[i] === o){
+					arr[i] = arr.pop();
+					return i;
+				}
+			}
+
+			return -1;
+		},
+		atake: function(arr, i){
+			var r = arr[i];
+			arr[i] = arr.pop();
+			return r;
+		},
+
 		// Extra utils
 		err: function(obj, msg){
 			var message = "[OIMO] " + obj + ": " + msg;
