@@ -1,21 +1,27 @@
 /**
- * A shape is used to detect collisions of rigid bodies.
+ * A shape is used to detect collisions of bodies.
  * @author saharan
  * @author lo-th
  */
-OIMO.Shape = function(config){
+OIMO.Shape = function(verts, faces){
 	this.id = OIMO.id();
 
+	// Body data
 	this.body = null;
 	this.contacts = [];
-	this.position = new OIMO.Vec3;
-	this.rotation = new OIMO.Mat33;
-	this.proxy = null;
 
-	this.density = config.density;
-	this.friction = config.friction;
-	this.restitution = config.restitution;
-	this.hitGroups = config.hitGroups;
+	// Position data
+	this.positionWorld = new OIMO.Vec3;
+	this.positionLocal = new OIMO.Vec3;
+
+	// Rotation data
+	this.rotationWorld = new OIMO.Mat3;
+	this.rotationLocal = new OIMO.Mat3;
+
+	// Simulation data
+	this.aabb = new OIMO.AABB;
+	this.vertices = verts;
+	this.faces = faces;
 };
 OIMO.Shape.prototype = {
 	constructor: OIMO.Shape,
@@ -31,7 +37,7 @@ OIMO.Shape.prototype = {
 
 		out.center = tot / j;
 	},
-	updateProxy: function(){
-		this.proxy.aabb.setFromPoints(this.vertices).expandByScalar(OIMO.AABB_PROX);
+	computeAabb: function(){
+		this.aabb.setFromPoints(this.vertices).expandByScalar(OIMO.AABB_PROX);
 	}
 };
