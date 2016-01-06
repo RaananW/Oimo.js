@@ -4,6 +4,7 @@ var OIMO = (function(){
 		EPSILON: 0.0001,
 		AABB_PROX: 0.05, // Error margin for AABB
 		ERR_INHERITANCE: "Inheritance error.",
+		errorBox: null,
 
 		// Math functions
 		abs: Math.abs,
@@ -19,6 +20,9 @@ var OIMO = (function(){
 		pow: Math.pow,
 		sqrt: Math.sqrt,
 		random: Math.random,
+		mix: function(v1, v2, v3){
+			return v1.dot(v2.cross(v3));
+		},
 
 		// Array sorting
 		ARR_NUMBERS_UP: function(a, b){
@@ -50,11 +54,11 @@ var OIMO = (function(){
 		// Extra utils
 		err: function(obj, msg){
 			var message = "[OIMO] " + obj + ": " + msg;
-			if(console && console.toString() === "[object Console]"){
+
+			if(OIMO.errorBox)
+				OIMO.errorBox.innerHTML += message;
+			else if(console && console.toString() === "[object Console]")
 				console.error(message);
-			} else if(self && self.postMessage){
-				self.postMessage({oimo: message});
-			}
 		},
 		id: (function(){
 			var _id = 0;
