@@ -89,7 +89,7 @@ OIMO.Vec3.prototype = {
 		this.z /= v.z;
 		return this;
 	},
-	divideVectors: function(v){
+	divideVectors: function(a, b){
 		return this.set(a.x / b.x, a.y / b.y, a.z / b.z);
 	},
 	divideScalar: function(s){
@@ -116,7 +116,7 @@ OIMO.Vec3.prototype = {
 	},
 	dot: function(v){
 		return this.x * v.x + this.y * v.y + this.z * v.z;
-	},
+	}
 	normalize: function(){
 		return this.divideScalar(this.length());
 	},
