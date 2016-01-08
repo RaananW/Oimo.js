@@ -1,80 +1,126 @@
 /**
  * A shape is used to detect collisions of bodies.
+ * The default is a tetrahedron. All of the parameters
+ * are in world space.
  * @author saharan
  * @author lo-th
+ * @author xprogram
  */
-OIMO.Shape = function(verts, faces){
-	var i, t;
-	i = faces.length;
+OIMO.Shape = function(p0, p1){
+	var i, p, t, that = this;
+	var v1, v2, v3;
+	var verts = p0 || [[0, 0, 0], [1, 0, 0], [0, 1, 0], [0, 0, 1]];
+	var indices = p1 || [[0, 1, 2], [0, 1, 3], [0, 2, 3], [1, 2, 3]];
 
-	// Check if faces are valid inputs
-	while(i--){
-		t = faces[i];
-
-		if(t[0] === t[1] || t[1] === t[2] || t[0] === t[2]){
-			OIMO.err("Shape", "You cannot have a triangle with identical vertices.");
-			return;
-		}
+	function prepare(vector){
+		vector.index = that.vertices.push(vector) - 1;
 	}
 
-	this.id = OIMO.id();
+	function make(a, b, c){
+		that.faces.push(new OIMO.Face(a, b, c));
+	}
 
-	// Body data
+	// Setup data
+	this.vertices = [];
+	this.faces = [];
+	i = verts.length;
+
+	while(i--)
+		prepare(new OIMO.Vec3(verts[i][0], verts[i][1], verts[i][2]));
+
+	this.vertices.reverse();
+
+	// Reset data
+	i = indices.length;
+	t = this.vertices;
+
+	while(i--)
+		make(t[indices[i][0]].index, t[indices[i][1]].index, t[indices[i][2]].index);
+
+	this.faces.reverse();
+
+	// Body & shape data
+	this.id = OIMO.id();
 	this.body = null;
 	this.contacts = [];
 
-	// Position data
-	this.positionWorld = new OIMO.Vec3;
-
-	// Rotation data
+	// Transform data
+	this.position = new OIMO.Vec3;
 	this.rotationWorld = new OIMO.Mat3;
 	this.rotationLocal = new OIMO.Mat3;
 
 	// Simulation data
 	this.aabb = new OIMO.AABB;
-	this.vertices = verts;
-	this.faces = faces;
-
-	// Mass data
 	this.density = 1;
+
+	// Calculate center of shape
+	p = this.faces;
+	i = p.length;
+
+	while(i--)
+		this.position.add(t[p[i].a]).add(t[p[i].b]).add(t[p[i].c]).divideScalar(3);
+
+	this.position.divideScalar(this.faces.length);
+	this.boundingRadius = this.aabb.getRadius();
 };
 OIMO.Shape.prototype = {
 	constructor: OIMO.Shape,
 
 	setupMassInfo: function(out){
-		var i, t, vs = this.vertices, r, m = 0;
-		var v1 = new OIMO.Vec3, v2 = new OIMO.Vec3, v3 = new OIMO.Vec3;
-		var c1, c2, c3;
+		var i, t, r, vs = this.vertices;
+		var m = 0, mass = 0, inertia = 0;
+		var v1 = _shape_setupMassInfo_v4, v2 = _shape_setupMassInfo_v5, v3 = _shape_setupMassInfo_v6;
+		i = vs.length;
 
 		while(i--){
 			t = this.faces[i];
 
-			r = vs[t[0]];
-			v1.set(r[0], r[1], r[2]);
+			r = vs[t.a];
+			v1.set(r.x, r.y, r.z);
 
-			r = vs[t[1]];
-			v2.set(r[0], r[1], r[2]);
+			r = vs[t.b];
+			v2.set(r.x, r.y, r.z);
 
-			r = vs[t[1]];
-			v3.set(r[0], r[1], r[2]);
+			r = vs[t.c];
+			v3.set(r.x, r.y, r.z);
 
 			// Calculate approximated mass using tetra formula based off vertices
 			// From: http://www.ditutor.com/vectors/volume_tetrahedron.html
-			m += 0.1666 * OIMO.mix(
+			m = 0.1666 * OIMO.mix(
 				_shape_setupMassInfo_v1.subVectors(v2, v1),
 				_shape_setupMassInfo_v2.subVectors(v3, v1),
-				_shape_setupMassInfo_v3.subVectors(OIMO.Vec3.ZERO, v1)
+				_shape_setupMassInfo_v3.subVectors(this.position, v1)
 			);
+
+			// Calculate approximated inertia value using tetra formula (regular tetra formula)
+			// From: http://www.calctown.com/calculators/moment-of-inertia-of-tetrahedron
+			inertia += 0.05 * m * OIMO.pow(v1.distanceTo(this.position), 2);
+
+			// Add extra tetra mass
+			mass += m;
 		}
 
-		out.mass = m * this.density;
-		out.inertia.set(0, 0, 0, 0, 0, 0, 0, 0, 0);
+		out.mass = mass * this.density;
+		out.inertia.set(inertia, 0, 0, 0, inertia, 0, 0, 0, inertia);
 	},
-	computeAabb: function(){
+	computeAABB: function(){
 		this.aabb.setFromPoints(this.vertices).expandByScalar(OIMO.AABB_PROX);
+	},
+	scale: function(radius){
+		var i = this.vertices.length;
+
+		while(i--)
+			this.vertices[i].multiplyScalar(radius);
+
+		// Calculate broadphase data
+		this.boundingRadius = radius;
+		this.aabb.expandByScalar(radius);
 	}
 };
 
 var _shape_setupMassInfo_v1 = new OIMO.Vec3;
 var _shape_setupMassInfo_v2 = new OIMO.Vec3;
 var _shape_setupMassInfo_v3 = new OIMO.Vec3;
+var _shape_setupMassInfo_v4 = new OIMO.Vec3;
+var _shape_setupMassInfo_v5 = new OIMO.Vec3;
+var _shape_setupMassInfo_v6 = new OIMO.Vec3;
