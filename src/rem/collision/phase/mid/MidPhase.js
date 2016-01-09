@@ -3,31 +3,11 @@
  * which face is colliding with which face between 2 shapes.
  * @author xprogram
  */
-OIMO.MidPhase = function(){
-	this.proxies = [];
-	this.pairs = [];
-	this.numChecks = 0;
-};
+OIMO.MidPhase = function(){};
 OIMO.MidPhase.prototype = {
 	constructor: OIMO.MidPhase,
 
-	createProxy: function(){
+	findNearest: function(s1, s2, manifold){
 		OIMO.err("MidPhase", OIMO.ERR_INHERITANCE);
-	},
-	addProxy: function(){
-		OIMO.err("MidPhase", OIMO.ERR_INHERITANCE);
-	},
-	removeProxy: function(){
-		OIMO.err("MidPhase", OIMO.ERR_INHERITANCE);
-	},
-	computePairs: function(){
-		this.pairs = []; // Reset array
-		this.collectPairs();
-	},
-	collectPairs: function(){
-		OIMO.err("MidPhase", OIMO.ERR_INHERITANCE);
-	},
-	addPair: function(p1, p2){
-		this.pairs.push(new OIMO.Pair(p1, p2));
 	}
 };
