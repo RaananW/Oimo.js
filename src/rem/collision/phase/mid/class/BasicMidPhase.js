@@ -20,8 +20,10 @@ OIMO.BasicMidPhase.prototype.findNearest = function(s1, s2, manifold){
 	// using bounding radius of vertices.
 	while(i--){
 		while(j--){
-			if(b[j].distanceTo(s1.position) <= a[i].distanceTo(s1.position))
-				manifold.addVertexCross(a[i], b[j]);
+			if(b[j].distanceTo(s1.position) <= a[i].distanceTo(s1.position)){
+				manifold.addVertex(s1, a[i]);
+				manifold.addVertex(s2, b[j]);
+			}
 		}
 	}
 };
