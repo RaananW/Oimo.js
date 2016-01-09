@@ -20,7 +20,7 @@ OIMO.EventEmitter.prototype = {
 		var f = this._eventListeners;
 		var i, params = Array.prototype.splice.call(arguments, 0, 1);
 
-		if(f.hasOwnProperty(nm)){
+		if(f.hasOwnProperty(nm) && f[nm].length){
 			i = f[nm].length;
 
 			while(i--)
