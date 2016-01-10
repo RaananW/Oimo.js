@@ -77,33 +77,14 @@ OIMO.Body = function(params){
 OIMO.Body.prototype = {
 	constructor: OIMO.Body,
 
-	addShape: function(shape, offset, rotation){
-		var a = _body_addShape_v1;
-		var b = _body_addShape_quat;
-
-		// Transfer offset data if provided
-		if(offset)
-			a.copy(offset);
-
-		// Transfer rotation data if provided
-		if(rotation)
-			b.copy(rotation);
-
-		// Update shape before passing it to body
-		shape.body = this;
-
-		// Update body
-		this.shapes.push(shape);
-		this.shapeOffsets.push(a);
-		this.shapeOrientations.push(b);
+	add: function(shape){
+		this.children.push(shape);
 		this.updateMassDetails();
 
 		return this;
 	},
-	removeShape: function(shape){
-		var i = OIMO.arem(this.shapes, shape);
-		OIMO.atake(this.shapeOffsets, i);
-		OIMO.atake(this.shapeOrientations, i);
+	remove: function(shape){
+		OIMO.arem(this.children, shape);
 		this.updateMassDetails();
 
 		return this;
