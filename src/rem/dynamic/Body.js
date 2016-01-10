@@ -11,6 +11,7 @@ OIMO.Body = function(params){
 	// Basic data
 	this.name = "";
 	this.world = null;
+	this.parent = null;
 	this.material = params.material || new OIMO.Material;
 
 	// Shape data
@@ -77,6 +78,7 @@ OIMO.Body.prototype = {
 	constructor: OIMO.Body,
 
 	add: function(shape){
+		shape.parent = this;
 		this.children.push(shape);
 		this.updateMassDetails();
 
@@ -84,6 +86,7 @@ OIMO.Body.prototype = {
 	},
 	remove: function(shape){
 		OIMO.arem(this.children, shape);
+		shape.parent = null;
 		this.updateMassDetails();
 
 		return this;
@@ -164,7 +167,11 @@ OIMO.Body.prototype = {
 	},
 	updateShape: function(){
 		var sh = this.shape;
-		sh.computeAABB();
+
+		sh.translate(_body_updateShape_v1.subVectors(this.position, this.prevPosition));
+		sh.rotate(_body_updateShape_quat.subQuats(this.rotation, this.prevRotation));
+
+		return this;
 	},
 	updateMassDetails: function(){
 		var I = this.inertia;
@@ -197,3 +204,5 @@ var _body_applyForce_v1 = new OIMO.Vec3;
 var _body_applyCentralForce_v1 = new OIMO.Vec3;
 var _body_updateInertiaWorld_m1 = new OIMO.Mat3;
 var _body_updateInertiaWorld_m2 = new OIMO.Mat3;
+var _body_updateShape_v1 = new OIMO.Vec3;
+var _body_updateShape_quat = new OIMO.Quat;
