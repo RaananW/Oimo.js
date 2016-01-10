@@ -113,6 +113,9 @@ OIMO.Shape.prototype = {
 	
 		f.divideScalar(p.length);
 		return f;
+	},
+	overlapsRadius: function(shape){
+		return shape.getCenter().distanceTo(this.getCenter()) <= this.boundingRadius + shape.boundingRadius;
 	}
 };
 
