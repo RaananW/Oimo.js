@@ -10,6 +10,13 @@ OIMO.Ray = function(o, d){
 OIMO.Ray.prototype = {
 	constructor: OIMO.Ray,
 
+	at: function(t, ot){
+		return (ot || new OIMO.Vec3).copy(this.direction).multiplyScalar(t).add(this.origin);
+	},
+	recast: function(t){
+		this.origin.copy(this.at(t));
+		return this;
+	},
 	intersectTriangle: function(a, b, c, backfaceCulling, optionalTarget){
 			var diff = _ray_intersectTriangle_diff;
 			var edge1 = _ray_intersectTriangle_edge1;
