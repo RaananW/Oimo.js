@@ -50,6 +50,19 @@ OIMO.Body = function(params){
 	this.sleeping = false;
 	this.sleepDelay = 0.1;
 
+	// Soft body data
+	this.stiffness = params.stiffness || Infinity;
+
+	// Split body data
+	this.maxSplits = params.maxSplits || Infinity;
+	this.threshold = params.threshold || 1e6;
+
+	// Melting body data
+	this.meltSpeed = params.meltSpeed || 0;
+	this.meltPoint = params.meltPoint || 0;
+	this.produceLiquids = params.produceLiquids || false;
+	this.droppedLiquids = [];
+
 	// Collision data
 	this.produceForces = true;
 
