@@ -26,11 +26,20 @@ OIMO.BroadPhase.prototype = {
 			if(shape1.aabb.overlaps(shape2.aabb))
 				this.addPair(shape1, shape2);
 		} else {
-			if(shape1.position.distanceTo(shape2.position) <= shape2.boundingRadius * 2)
+			if(shape1.radiusOverlaps(shape2))
 				this.addPair(shape1, shape2);
 		}
 
 		this.numChecks++;
+	},
+	isAvailablePair: function(p1, p2){
+		if(p1.mass === Infinity && p2.mass === Infinity)
+			return false;
+		
+		if(p1.type === OIMO.BODY_STATIC && p2.type === OIMO.BODY_STATIC)
+			return false;
+		
+		return true;
 	},
 	addPair: function(p1, p2){
 		this.pairs.push(new OIMO.Pair(p1, p2));
