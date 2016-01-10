@@ -14,9 +14,7 @@ OIMO.Body = function(params){
 	this.material = params.material || new OIMO.Material;
 
 	// Shape data
-	this.shapes = [];
-	this.shapeOffsets = [];
-	this.shapeOrientations = [];
+	this.shape = params.shape || new OIMO.Shape;
 
 	// Position
 	this.position = params.position || new OIMO.Vec3;
@@ -52,10 +50,6 @@ OIMO.Body = function(params){
 
 	// Soft body data
 	this.stiffness = params.stiffness || Infinity;
-
-	// Split body data
-	this.maxSplits = params.maxSplits || Infinity;
-	this.threshold = params.threshold || 1e6;
 
 	// Melting body data
 	this.meltSpeed = params.meltSpeed || 0;
@@ -186,13 +180,10 @@ OIMO.Body.prototype = {
 
 		// Update extra information
 		this.updateInertiaWorld();
-		this.updateShapes();
+		this.updateShape();
 	},
-	updateShapes: function(){
-		var i = this.shapes.length;
-
-		while(i--)
-			this.shapes[i].computeAabb();
+	updateShape: function(){
+		this.shape.computeAABB();
 	},
 	updateMassDetails: function(){
 		var ir = this.inertiaLocal;
