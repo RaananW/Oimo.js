@@ -29,6 +29,9 @@ OIMO.Vec3.prototype = {
 		this.z = z;
 		return this;
 	},
+	setZero: function(){
+		return this.set(0, 0, 0);
+	},
 	copy: function(v){
 		this.x = v.x;
 		this.y = v.y;
