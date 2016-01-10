@@ -13,7 +13,7 @@ OIMO.Shape = function(p0, p1){
 	var indices = p1 || [[0, 1, 2], [0, 1, 3], [0, 2, 3], [1, 2, 3]];
 
 	function prepare(vector){
-		vector.index = that.vertices.push(vector) - 1;
+		vector.uses = [];
 	}
 
 	function make(a, b, c){
@@ -35,7 +35,7 @@ OIMO.Shape = function(p0, p1){
 	t = this.vertices;
 
 	while(i--)
-		make(t[indices[i][0]].index, t[indices[i][1]].index, t[indices[i][2]].index);
+		make(t[indices[i][0]], t[indices[i][1]], t[indices[i][2]]);
 
 	this.faces.reverse();
 
