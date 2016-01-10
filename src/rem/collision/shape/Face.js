@@ -1,6 +1,7 @@
 /**
  * Representation of a 3D triangle from
  * 3 vectors.
+ * @author xprogram
  */
 OIMO.Face = function(a, b, c){
 	this.a = a;
