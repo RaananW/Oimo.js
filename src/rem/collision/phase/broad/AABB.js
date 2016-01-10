@@ -53,6 +53,6 @@ OIMO.AABB.prototype = {
 		return (this.getCenter().distanceTo(this.min) < this.getCenter().distanceTo(this.max)) ? this.max : this.min;
 	},
 	getRadius: function(){
-		return this.getCenter().distanceTo(this.getFarthestPoint()));
+		return this.getCenter().distanceTo(this.getFarthestPoint());
 	}
 };
