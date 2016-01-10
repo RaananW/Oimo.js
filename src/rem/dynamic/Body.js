@@ -71,8 +71,8 @@ OIMO.Body.prototype = {
 	constructor: OIMO.Body,
 
 	addShape: function(shape, offset, rotation){
-		var a = _vec3_1;
-		var b = _quat_1;
+		var a = _body_addShape_v1;
+		var b = _body_addShape_quat;
 
 		// Transfer offset data if provided
 		if(offset)
@@ -104,12 +104,14 @@ OIMO.Body.prototype = {
 	awake: function(){
 		this.sleeping = false;
 		this.emit("awake");
+		return this;
 	},
 	sleep: function(){
 		this.sleeping = true;
 		this.velocity.setZero();
 		this.angularVelocity.setZero();
 		this.emit("sleep");
+		return this;
 	},
 	dispose: function(){
 		this.world.removeBody(this);
@@ -120,21 +122,22 @@ OIMO.Body.prototype = {
 			return;
 
 		this.force.add(f);
-		this.torque.add(_vec3_1.crossVectors(p, f).clone());
+		this.torque.add(_body_applyForce_v1.crossVectors(p, f).clone());
 
 		return this;
 	},
 	applyCentralForce: function(f){
-		this.applyForce(f, _vec3_1.setZero());
+		this.applyForce(f, _body_applyCentralForce_v1);
 		return this;
 	},
 	updateInertiaWorld: function(override){ // From cannon.js
 		var ir = this.invInertiaLocal;
+		var mat3_1 = _body_updateInertiaWorld_m1, mat3_2 = _body_updateInertiaWorld_m2;
 
 		// Only update when the diagonal entries are different
 		if((ir.x !== ir.y && ir.y !== ir.z) || override){
-			_mat3_1.setFromQuaternion(this.rotation).transpose(_mat3_2).scale(ir);
-			this.invInertiaWorld.multiplyMatrices(_mat3_1, _mat3_2);
+			mat3_1.setFromQuaternion(this.rotation).transpose(mat3_2).scale(ir);
+			this.invInertiaWorld.multiplyMatrices(mat3_1, mat3_2);
 		}
 	},
 	integrate: function(dt){ // From cannon.js
@@ -183,3 +186,10 @@ OIMO.Body.prototype = {
 		this.invMass = (this.mass > 0) ? 1 / this.mass : 0;
 	}
 };
+
+var _body_addShape_v1 = new OIMO.Vec3;
+var _body_addShape_quat = new OIMO.Quat;
+var _body_applyForce_v1 = new OIMO.Vec3;
+var _body_applyCentralForce_v1 = new OIMO.Vec3;
+var _body_updateInertiaWorld_m1 = new OIMO.Mat3;
+var _body_updateInertiaWorld_m2 = new OIMO.Mat3;
