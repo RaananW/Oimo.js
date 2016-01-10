@@ -38,9 +38,8 @@ OIMO.Body = function(params){
 	this.invMass = NaN;
 
 	// Inertia data
-	this.inertiaLocal = new OIMO.Mat3;
-	this.inertiaWorld = new OIMO.Mat3;
-	this.invInertiaLocal = new OIMO.Mat3;
+	this.inertia = new OIMO.Mat3;
+	this.invInertia = new OIMO.Mat3;
 	this.invInertiaWorld = new OIMO.Mat3;
 
 	// Sleep data
@@ -164,11 +163,31 @@ OIMO.Body.prototype = {
 		this.updateShape();
 	},
 	updateShape: function(){
-		this.shape.computeAABB();
+		var sh = this.shape;
+		sh.computeAABB();
 	},
 	updateMassDetails: function(){
-		var ir = this.inertiaLocal;
-		this.invMass = (this.mass > 0) ? 1 / this.mass : 0;
+		var I = this.inertia;
+		var fixed = this.fixedRotation;
+		var halfExtents = new OIMO.Vec3;
+		var target = new OIMO.Vec3;
+
+		this.computeAABB();
+		halfExtents.subVectors(this.aabb.max, this.aabb.min).divideScalar(2);
+
+		var e = halfExtents;
+		target.x = 0.0833 * mass * (2 * e.y * 2 * e.y + 2 * e.z * 2 * e.z);
+		target.y = 0.0833 * mass * (2 * e.x * 2 * e.x + 2 * e.z * 2 * e.z);
+		target.z = 0.0833 * mass * (2 * e.y * 2 * e.y + 2 * e.x * 2 * e.x);
+		this.inertia.set(target.x, 0, 0, 0, target.y, 0, 0, 0, target.z);
+
+		this.invInertia.set(
+			I.x > 0 && !fixed ? 1.0 / I.x : 0,
+			I.y > 0 && !fixed ? 1.0 / I.y : 0,
+			I.z > 0 && !fixed ? 1.0 / I.z : 0
+		);
+
+		this.updateInertiaWorld(true);
 	}
 };
 
