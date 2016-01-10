@@ -42,5 +42,17 @@ OIMO.AABB.prototype = {
 	},
 	containsBox: function(box){
 		return this.containsPoint(box.min) && this.containsPoint(box.max);
+	},
+	overlaps: function(box){
+		return this.containsPoint(box.min) || this.containsPoint(box.max);
+	},
+	getCenter: function(){
+		return new OIMO.Vec3().add(box.min).add(box.max).divideScalar(2);
+	},
+	getFarthestPoint: function(){
+		return (this.getCenter().distanceTo(this.min) < this.getCenter().distanceTo(this.max)) ? this.max : this.min;
+	},
+	getRadius: function(){
+		return this.getCenter().distanceTo(this.getFarthestPoint()));
 	}
 };
