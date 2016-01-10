@@ -44,23 +44,9 @@ OIMO.Shape = function(p0, p1){
 	this.body = null;
 	this.contacts = [];
 
-	// Transform data
-	this.position = new OIMO.Vec3;
-	this.rotationWorld = new OIMO.Mat3;
-	this.rotationLocal = new OIMO.Mat3;
-
 	// Simulation data
 	this.aabb = new OIMO.AABB;
 	this.density = 1;
-
-	// Calculate center of shape
-	p = this.faces;
-	i = p.length;
-
-	while(i--)
-		this.position.add(t[p[i].a]).add(t[p[i].b]).add(t[p[i].c]).divideScalar(3);
-
-	this.position.divideScalar(this.faces.length);
 	this.boundingRadius = this.aabb.getRadius();
 };
 OIMO.Shape.prototype = {
@@ -69,6 +55,7 @@ OIMO.Shape.prototype = {
 	setupMassInfo: function(out){
 		var i, t, r, vs = this.vertices;
 		var m = 0, mass = 0, inertia = 0;
+		var pos = _shape_setupMassInfo_v7;
 		var v1 = _shape_setupMassInfo_v4, v2 = _shape_setupMassInfo_v5, v3 = _shape_setupMassInfo_v6;
 		i = vs.length;
 
@@ -89,12 +76,12 @@ OIMO.Shape.prototype = {
 			m = 0.1666 * OIMO.mix(
 				_shape_setupMassInfo_v1.subVectors(v2, v1),
 				_shape_setupMassInfo_v2.subVectors(v3, v1),
-				_shape_setupMassInfo_v3.subVectors(this.position, v1)
+				_shape_setupMassInfo_v3.subVectors(pos, v1)
 			);
 
 			// Calculate approximated inertia value using tetra formula (regular tetra formula)
 			// From: http://www.calctown.com/calculators/moment-of-inertia-of-tetrahedron
-			inertia += 0.05 * m * OIMO.pow(v1.distanceTo(this.position), 2);
+			inertia += 0.05 * m * OIMO.pow(v1.distanceTo(pos), 2);
 
 			// Add extra tetra mass
 			mass += m;
@@ -113,8 +100,19 @@ OIMO.Shape.prototype = {
 			this.vertices[i].multiplyScalar(radius);
 
 		// Calculate broadphase data
-		this.boundingRadius = radius;
-		this.aabb.expandByScalar(radius);
+		this.boundingRadius *= radius;
+		this.computeAABB();
+	},
+	getCenter: function(){
+		var p = this.faces;
+		var i = p.length;
+		var f = new OIMO.Vec3;
+	
+		while(i--)
+			f.add(p[i].getCentroid());
+	
+		f.divideScalar(p.length);
+		return f;
 	}
 };
 
@@ -124,3 +122,4 @@ var _shape_setupMassInfo_v3 = new OIMO.Vec3;
 var _shape_setupMassInfo_v4 = new OIMO.Vec3;
 var _shape_setupMassInfo_v5 = new OIMO.Vec3;
 var _shape_setupMassInfo_v6 = new OIMO.Vec3;
+var _shape_setupMassInfo_v7 = new OIMO.Vec3;
