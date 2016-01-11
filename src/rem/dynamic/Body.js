@@ -7,6 +7,7 @@
  */
 OIMO.Body = function(params){
 	OIMO.EventEmitter.call(this);
+	OIMO.Shell.call(this);
 
 	// Basic data
 	this.name = "";
@@ -59,6 +60,10 @@ OIMO.Body = function(params){
 
 	// Collision data
 	this.produceForces = true;
+	this.boundingBox = new OIMO.BoundingBox;
+	this.boundingSphere = new OIMO.BoundingSphere;
+	this.boundingCylinder = new OIMO.BoundingCylinder;
+	this.boundingCapsule = new OIMO.BoundingCapsule;
 
 	// Link data
 	this.links = [];
@@ -102,6 +107,33 @@ OIMO.Body.prototype = {
 	},
 	dispose: function(){
 		this.world.removeBody(this);
+		return this;
+	},
+	intersectTest: function(type, shape){
+		switch(type){
+			case OIMO.TEST_SPHERE:
+				return this.boundingSphere.overlaps(shape.boundingSphere);
+			break;
+			case OIMO.TEST_BOX:
+				return this.boundingBox.overlaps(shape.boundingBox);
+			break;
+			case OIMO.TEST_CYLINDER:
+				return this.boundingCylinder.overlaps(shape.boundingCylinder);
+			break;
+			case OIMO.TEST_CAPSULE:
+				return this.boundingCapsule.overlaps(shape.boundingCapsule);
+			break;
+			default:
+				return null;
+			break;
+		}
+	},
+	computeBounds: function(){
+		this.boundingBox.setFromPoints(this.shape.vertices).expandByScalar(OIMO.BOUNDS_PROX);
+		this.boundingSphere.setFromPoints(this.shape.vertices).expandByScalar(OIMO.BOUNDS_PROX);
+		this.boundingCylinder.setFromPoints(this.shape.vertices).expandByScalar(OIMO.BOUNDS_PROX);
+		this.boundingCapsule.setFromPoints(this.shape.vertices).expandByScalar(OIMO.BOUNDS_PROX);
+
 		return this;
 	},
 	applyForce: function(f, p){
@@ -176,8 +208,8 @@ OIMO.Body.prototype = {
 		var halfExtents = new OIMO.Vec3;
 		var target = new OIMO.Vec3;
 
-		this.computeAABB();
-		halfExtents.subVectors(this.aabb.max, this.aabb.min).divideScalar(2);
+		this.computeBounds();
+		halfExtents.subVectors(this.boundingBox.max, this.boundingBox.min).divideScalar(2);
 
 		var e = halfExtents;
 		target.x = 0.0833 * mass * (2 * e.y * 2 * e.y + 2 * e.z * 2 * e.z);
