@@ -7,7 +7,7 @@
  */
 OIMO.Body = function(params){
 	OIMO.EventEmitter.call(this);
-	OIMO.Shell.call(this);
+	OIMO.Shell.call(this, params);
 
 	// Basic data
 	this.name = "";
@@ -17,14 +17,6 @@ OIMO.Body = function(params){
 
 	// Shape data
 	this.shape = params.shape || new OIMO.Shape;
-
-	// Position
-	this.position = params.position || new OIMO.Vec3;
-	this.prevPosition = this.position.clone();
-
-	// Rotation
-	this.rotation = params.rotation || new OIMO.Quat;
-	this.prevRotation = this.rotation.clone();
 
 	// Velocity (both types)
 	this.velocity = params.velocity || new OIMO.Vec3;
@@ -79,20 +71,6 @@ OIMO.Body = function(params){
 OIMO.Body.prototype = {
 	constructor: OIMO.Body,
 
-	add: function(shape){
-		shape.parent = this;
-		this.children.push(shape);
-		this.updateMassDetails();
-
-		return this;
-	},
-	remove: function(shape){
-		OIMO.arem(this.children, shape);
-		shape.parent = null;
-		this.updateMassDetails();
-
-		return this;
-	},
 	awake: function(){
 		this.sleeping = false;
 		this.emit("awake");
