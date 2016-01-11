@@ -55,7 +55,6 @@ OIMO.Body = function(params){
 	this.boundingBox = new OIMO.BoundingBox;
 	this.boundingSphere = new OIMO.BoundingSphere;
 	this.boundingCylinder = new OIMO.BoundingCylinder;
-	this.boundingCapsule = new OIMO.BoundingCapsule;
 
 	// Link data
 	this.links = [];
