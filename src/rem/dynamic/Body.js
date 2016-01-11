@@ -69,10 +69,7 @@ OIMO.Body = function(params){
 	if(params.angularVelocity)
 		this.angularVelocity.copy(params.angularVelocity);
 
-	if(params.shape)
-		this.addShape(params.shape);
-	else
-		this.updateMassDetails();
+	this.updateMassDetails();
 };
 OIMO.Body.prototype = {
 	constructor: OIMO.Body,
