@@ -14,6 +14,7 @@ OIMO.Shape = function(p0, p1){
 
 	function prepare(vector){
 		vector.uses = [];
+		that.vertices.push(vector);
 	}
 
 	function make(a, b, c){
