@@ -19,15 +19,15 @@ OIMO.Body = function(params){
 
 	// Position
 	this.position = params.position || new OIMO.Vec3;
-	this.prevPosition = new OIMO.Vec3;
+	this.prevPosition = this.position.clone();
 
 	// Rotation
 	this.rotation = params.rotation || new OIMO.Quat;
-	this.prevRotation = new OIMO.Quat;
+	this.prevRotation = this.rotation.clone();
 
 	// Velocity (both types)
-	this.velocity = new OIMO.Vec3;
-	this.angularVelocity = new OIMO.Vec3;
+	this.velocity = params.velocity || new OIMO.Vec3;
+	this.angularVelocity = params.angularVelocity || new OIMO.Vec3;
 
 	// Vectors to compute in solver
 	this.force = new OIMO.Vec3;
