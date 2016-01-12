@@ -45,5 +45,24 @@ OIMO.BoundingCylinder.prototype = {
 		var c2 = (cm >= dm && mc <= dm) || (cm >= md && mc <= md);
 
 		return c1 && c2;
+	},
+	getBoundingSphere: function(){
+		return new OIMO.BoundingSphere(this.center, this.height + this.radius);
+	},
+	getBoundingBox: function(){
+		var h = this.height, r = this.radius, c = this.center;
+		var mn = new OIMO.Vec3, mx = new OIMO.Vec3;
+
+		mn.copy(c);
+		mn.x -= r;
+		mn.z -= r;
+		mn.y -= h;
+
+		mx.copy(c);
+		mx.x += r;
+		mx.z += r;
+		mx.y += h;
+
+		return new OIMO.BoundingBox(mn, mx);
 	}
 };
