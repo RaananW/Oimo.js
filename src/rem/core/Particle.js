@@ -4,5 +4,9 @@
  * @author xprogram
  */
 OIMO.Particle = function(){
-	this.radius = 0.0001;
+	this.position = new OIMO.Vec3;
+
+	this.intersects = function(p){
+		return this.position.distanceTo(p.position) <= 0.0002;
+	};
 };
