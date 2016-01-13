@@ -44,9 +44,10 @@ OIMO.Shape = function(p0, p1){
 	this.id = OIMO.id();
 	this.body = null;
 	this.contacts = [];
+	this.particles = [];
 
 	// Simulation data
-	this.aabb = new OIMO.AABB;
+	this.boundingBox = new OIMO.BoundingBox;
 	this.density = 1;
 	this.boundingRadius = this.aabb.getRadius();
 };
