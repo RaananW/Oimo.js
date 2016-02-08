@@ -1,7 +1,7 @@
 /**
  * A shape is used to detect collisions of bodies.
  * The default is a tetrahedron. All of the parameters
- * are in world space.
+ * are in local space to avoid the least numerical errors.
  * @author saharan
  * @author lo-th
  * @author xprogram
@@ -50,6 +50,7 @@ OIMO.Shape = function(p0, p1){
 	this.boundingBox = new OIMO.BoundingBox;
 	this.density = 1;
 	this.boundingRadius = this.aabb.getRadius();
+	this.boundingCenter = this.aabb.getCenter();
 };
 OIMO.Shape.prototype = {
 	constructor: OIMO.Shape,
@@ -104,17 +105,6 @@ OIMO.Shape.prototype = {
 		// Calculate broadphase data
 		this.boundingRadius *= radius;
 		this.computeAABB();
-	},
-	getCenter: function(){
-		var p = this.faces;
-		var i = p.length;
-		var f = new OIMO.Vec3;
-	
-		while(i--)
-			f.add(p[i].getCentroid());
-	
-		f.divideScalar(p.length);
-		return f;
 	},
 	overlapsRadius: function(shape){
 		return shape.getCenter().distanceTo(this.getCenter()) <= this.boundingRadius + shape.boundingRadius;
